@@ -17,8 +17,8 @@
     --a:#c89b3c; --a-text:#a67d25; --hero:#1b2463; --hero2:#0f1440; --hero-text:#f4f1ea; --hero-muted:#cfd3ef;
     --note:#f6ecd6; --note-text:#6b4e12; --ok-bg:rgba(47,125,79,.1); --ok:#2f7d4f;
     --shadow:0 10px 30px rgba(60,45,20,.10);
-    --serif:'PT Serif',Georgia,'Times New Roman',serif; --sans:'IBM Plex Sans',system-ui,'Segoe UI',Roboto,sans-serif;
-    --mono:'IBM Plex Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
+    --serif:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; --sans:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+    --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
     color-scheme:light;
   }
   @media (prefers-color-scheme: dark){
@@ -38,6 +38,8 @@
     --shadow:0 10px 30px rgba(0,0,0,.45); color-scheme:dark;
   }
   *{box-sizing:border-box}
+  body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+  h1,h2,h3{letter-spacing:-.015em}
   body{margin:0;font:16px/1.55 var(--sans);color:var(--ink);background:var(--bg)}
   a{color:var(--p)} a:hover{color:var(--p2)}
   .hero{position:relative;background:radial-gradient(circle at 50% 15%,var(--hero),var(--hero2) 72%);color:var(--hero-text);padding:64px 16px 72px;text-align:center}
@@ -46,7 +48,7 @@
   .prekidac button{background:transparent;color:var(--hero-text);border:0;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}
   .prekidac button[aria-pressed="true"]{background:var(--hero-text);color:var(--hero2);font-weight:600}
   .hero img{width:120px;height:120px;border-radius:26px;box-shadow:0 20px 40px rgba(0,0,0,.4)}
-  h1{margin:18px 0 6px;font:700 42px/1.1 var(--serif);letter-spacing:.02em}
+  h1{margin:18px 0 6px;font:700 42px/1.1 var(--serif);letter-spacing:-.02em}
   h1 .plus{color:var(--a)}
   .hero p{color:var(--hero-muted);margin:0 auto;max-width:680px}
   .hero .ko{display:inline-block;margin-top:14px;font:500 12px/1.7 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--a)}
@@ -71,6 +73,10 @@
   .izdanja td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
   .izdanja td:first-child{white-space:nowrap;font-weight:600;font-family:var(--mono)} .izdanja td:nth-child(2){white-space:nowrap;color:var(--muted)}
   .izdanja a{margin-right:12px;white-space:nowrap} .izdanja a.opis{color:var(--muted)}
+  .hero-veze{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+  .btn-svetlo{display:inline-block;padding:9px 16px;border-radius:4px;border:1px solid rgba(244,241,234,.5);color:var(--hero-text);text-decoration:none;font-weight:600;font-size:14px}
+  .btn-svetlo:hover{background:rgba(244,241,234,.12);color:var(--hero-text)}
+  .btn-svetlo.zlato{background:var(--a);border-color:var(--a);color:#1b2463} .btn-svetlo.zlato:hover{filter:brightness(1.08);color:#1b2463}
   footer{text-align:center;color:var(--muted);font-size:13px;padding:20px 16px 32px}
   footer img{height:28px;display:block;margin:0 auto 10px}
   @media (max-width:560px){ h1{font-size:34px} .alati{position:static;justify-content:center;margin-bottom:18px} }
@@ -92,24 +98,28 @@
      (пуномоћје, изјава, сагласност, уговор…) и допишете оно чега нема на картици, а документ се штампа или чува као PDF и Word.
      Без интернета и без Office-а.</p>
   <span class="ko">за адвокате, адвокатске приправнике и јавне бележнике</span>
+  <div class="hero-veze"><a class="btn-svetlo" href="#preuzimanje">⬇ Преузимање</a><a class="btn-svetlo zlato" href="cene.html">Цене и калкулатор</a></div>
 </div>
 <main>
   <section id="preuzimanje">
     <h2>Преузимање</h2>
-    <div class="uskoro" id="uvod"><b>Образац+ 1.0.0</b> за Windows, macOS и Linux. После инсталације програм одмах ради као
-      пробна верзија; лиценцни кључ се уноси у Подешавања → Лиценца. Програм сам јавља кад стигне нова верзија.</div>
+    <div class="uskoro" id="uvod"><b>Образац+ 1.1.0</b> за Windows, macOS и Linux. После инсталације програм одмах ради као
+      пробна верзија; претплатни кључ се уноси једном у Подешавања → Лиценца, а претплата се продужава уплатом – нови
+      кључ не треба. Програм сам јавља кад стигне нова верзија. <a href="cene.html">Цене и калкулатор →</a></div>
     <div class="cards">
       <div class="card"><div class="kod">WIN</div><h3>Windows 10 / 11</h3><p>Инсталациони чаробњак (.exe) – укључује сервис за паметне картице.</p>
-        <a class="btn" id="dlWin" href="https://github.com/betania-tech/obrazacplus/releases/latest/download/ObrazacPlus-setup.exe">⬇ Преузми за Windows</a> <small class="v" id="vWin">верзија 1.0.0</small></div>
+        <a class="btn" id="dlWin" href="https://github.com/betania-tech/obrazacplus/releases/latest/download/ObrazacPlus-setup.exe">⬇ Преузми за Windows</a> <small class="v" id="vWin">верзија 1.1.0</small></div>
       <div class="card"><div class="kod">MAC</div><h3>macOS</h3><p>Инсталациони пакет (.pkg).</p>
-        <a class="btn" id="dlMac" href="https://github.com/betania-tech/obrazacplus/releases/latest/download/ObrazacPlus.pkg">⬇ Преузми за macOS</a> <small class="v" id="vMac">верзија 1.0.0</small></div>
+        <a class="btn" id="dlMac" href="https://github.com/betania-tech/obrazacplus/releases/latest/download/ObrazacPlus.pkg">⬇ Преузми за macOS</a> <small class="v" id="vMac">верзија 1.1.0</small></div>
       <div class="card"><div class="kod">LINUX</div><h3>Linux (Ubuntu / Debian)</h3><p>Пакет .deb – дупли клик или <code>sudo apt install ./obrazacplus_amd64.deb</code></p>
-        <a class="btn" id="dlDeb" href="https://github.com/betania-tech/obrazacplus/releases/latest/download/obrazacplus_amd64.deb">⬇ Преузми .deb</a> <small class="v" id="vDeb">верзија 1.0.0</small></div>
+        <a class="btn" id="dlDeb" href="https://github.com/betania-tech/obrazacplus/releases/latest/download/obrazacplus_amd64.deb">⬇ Преузми .deb</a> <small class="v" id="vDeb">верзија 1.1.0</small></div>
     </div>
     <div class="note" style="margin-top:14px"><b>Инсталатери још нису дигитално потписани</b>, па систем при првом покретању
       упозорава. <b>Windows:</b> „Windows protected your PC“ → <i>More info</i> → <i>Run anyway</i>.
       <b>macOS:</b> десни клик на ObrazacPlus.pkg → <i>Open</i> (или <i>System Settings → Privacy &amp; Security → Open Anyway</i>).
       <b>Linux:</b> <code>sudo apt install ./obrazacplus_amd64.deb</code>.</div>
+    <p style="margin:14px 0 0">Пакети за једног адвоката, канцеларију и јавног бележника, месечно или годишње: <a href="cene.html"><b>Цене и калкулатор</b></a>.
+      Цене су без ПДВ-а – Betania Tech тренутно није у систему ПДВ-а.</p>
   </section>
 
   <section>
@@ -185,7 +195,7 @@
        <a href="mailto:hello@betania.io">hello@betania.io</a> · <a href="https://betania.io/apps/obrazacplus">betania.io/apps/obrazacplus</a></p>
   </section>
 </main>
-<footer><img src="betania-wide.svg" alt="Betania">Образац+ <span id="ver">v1.0.0</span> · © Betania · <a href="mailto:hello@betania.io">hello@betania.io</a></footer>
+<footer><img src="betania-wide.svg" alt="Betania">Образац+ <span id="ver">v1.1.0</span> · © Betania · <a href="mailto:hello@betania.io">hello@betania.io</a></footer>
 <script>
   // Издања: GitHub Releases јавног репоа, тагови v*, стални називи инсталатера (исти као у obrazacplus/azuriranje.py).
   const REPO = "betania-tech/obrazacplus";

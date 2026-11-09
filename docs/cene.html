@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="sr-Cyrl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Образац+ – цене</title>
+<meta name="description" content="Цене програма Образац+ по броју корисника: Соло, Канцеларија и Велика канцеларија, месечно или годишње. Калкулатор показује који пакет је најповољнији за вашу канцеларију.">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<script>
+  (function(){ try { var t = localStorage.getItem('obrazac-tema'); if (t === 'tamno' || t === 'svetlo') document.documentElement.dataset.tema = t; } catch (e) {} })();
+</script>
+<style>
+  /* Палета „Мастило и злато“ – исти токени као index.html и програм. */
+  :root{
+    --bg:#f4f1ea; --surf:#fbf9f4; --line:#ddd6c8; --ink:#15171f; --muted:#6a6a78;
+    --p:#27358f; --p2:#1d2870; --p-text:#fff; --p-soft:rgba(39,53,143,.08);
+    --a:#c89b3c; --a-text:#a67d25; --hero:#1b2463; --hero2:#0f1440; --hero-text:#f4f1ea; --hero-muted:#cfd3ef;
+    --note:#f6ecd6; --note-text:#6b4e12; --ok-bg:rgba(47,125,79,.1); --ok:#2f7d4f;
+    --shadow:0 10px 30px rgba(60,45,20,.10);
+    --serif:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; --sans:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+    --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-tema="svetlo"]){
+      --bg:#10131f; --surf:#171b2b; --line:#2a3047; --ink:#eceaf3; --muted:#9b9db3;
+      --p:#7d8cf0; --p2:#95a2f5; --p-text:#10131f; --p-soft:rgba(125,140,240,.14);
+      --a:#e3b75a; --a-text:#e3b75a; --hero:#141a3d; --hero2:#0a0d1c; --hero-text:#eceaf3; --hero-muted:#a9aed6;
+      --note:rgba(227,183,90,.12); --note-text:#e3b75a; --ok-bg:rgba(92,196,138,.12); --ok:#5cc48a;
+      --shadow:0 10px 30px rgba(0,0,0,.45); color-scheme:dark;
+    }
+  }
+  :root[data-tema="tamno"]{
+    --bg:#10131f; --surf:#171b2b; --line:#2a3047; --ink:#eceaf3; --muted:#9b9db3;
+    --p:#7d8cf0; --p2:#95a2f5; --p-text:#10131f; --p-soft:rgba(125,140,240,.14);
+    --a:#e3b75a; --a-text:#e3b75a; --hero:#141a3d; --hero2:#0a0d1c; --hero-text:#eceaf3; --hero-muted:#a9aed6;
+    --note:rgba(227,183,90,.12); --note-text:#e3b75a; --ok-bg:rgba(92,196,138,.12); --ok:#5cc48a;
+    --shadow:0 10px 30px rgba(0,0,0,.45); color-scheme:dark;
+  }
+  :root{ --solo:#5a7d9a; --kanc:#27358f; --velika:#c89b3c; }
+  :root[data-tema="tamno"]{ --solo:#8fb2cf; --kanc:#7d8cf0; --velika:#e3b75a; }
+  @media (prefers-color-scheme: dark){ :root:not([data-tema="svetlo"]){ --solo:#8fb2cf; --kanc:#7d8cf0; --velika:#e3b75a; } }
+  *{box-sizing:border-box}
+  body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+  h1,h2,h3{letter-spacing:-.015em}
+  body{margin:0;font:16px/1.55 var(--sans);color:var(--ink);background:var(--bg)}
+  a{color:var(--p)} a:hover{color:var(--p2)}
+  .hero{position:relative;background:radial-gradient(circle at 50% 15%,var(--hero),var(--hero2) 72%);color:var(--hero-text);padding:40px 16px 64px;text-align:center}
+  .alati{position:absolute;top:14px;right:16px;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+  .nazad{position:absolute;top:18px;left:16px;color:var(--hero-muted);font-size:14px;text-decoration:none} .nazad:hover{color:var(--hero-text)}
+  .prekidac{display:flex;border:1px solid rgba(244,241,234,.45);border-radius:999px;overflow:hidden}
+  .prekidac button{background:transparent;color:var(--hero-text);border:0;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}
+  .prekidac button[aria-pressed="true"]{background:var(--hero-text);color:var(--hero2);font-weight:600}
+  h1{margin:10px 0 6px;font:700 40px/1.1 var(--serif)} h1 .plus{color:var(--a)}
+  .hero p{color:var(--hero-muted);margin:0 auto;max-width:640px}
+  main{position:relative;z-index:1;max-width:1040px;margin:-36px auto 40px;padding:0 16px}
+  section{background:var(--surf);border:1px solid var(--line);border-radius:6px;padding:24px;margin-top:16px;box-shadow:var(--shadow)}
+  section > h2{font:700 22px/1.25 var(--serif);margin:0 0 10px}
+  .eyebrow{font:500 11px/1 var(--mono);letter-spacing:.18em;color:var(--a-text);text-transform:uppercase;margin-bottom:8px}
+  /* калкулатор */
+  .calc{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:28px;align-items:start}
+  .figura{display:flex;align-items:baseline;gap:10px;margin:6px 0 4px}
+  .figura input{font:700 64px/1 var(--serif);color:var(--ink);background:transparent;border:0;border-bottom:2px dashed var(--line);padding:0;width:2.2ch;text-align:left;-moz-appearance:textfield}
+  .figura input::-webkit-outer-spin-button,.figura input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .figura input:focus{outline:none;border-bottom-color:var(--p)}
+  .jed{color:var(--muted);font-size:15px}
+  input[type=range]{width:100%;accent-color:var(--p);margin:14px 0 6px}
+  .lestvica{display:flex;height:26px;border-radius:4px;overflow:hidden;border:1px solid var(--line)}
+  .traka{background:color-mix(in srgb,var(--band) 22%,transparent);display:flex;align-items:center;justify-content:center;font-size:11.5px;color:var(--ink);white-space:nowrap;overflow:hidden;transition:background .2s}
+  .traka.ovde{background:color-mix(in srgb,var(--band) 55%,transparent);font-weight:600}
+  .crte{position:relative;height:18px;font:11px/1 var(--mono);color:var(--muted)}
+  .crte span{position:absolute;top:4px;transform:translateX(-50%)} .crte span:first-child{transform:none} .crte span:last-child{transform:translateX(-100%)}
+  .prekidaci{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0 6px}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+  .seg button{background:transparent;border:0;padding:7px 14px;font:inherit;font-size:13.5px;color:var(--ink);cursor:pointer}
+  .seg button[aria-pressed="true"]{background:var(--p);color:var(--p-text);font-weight:600}
+  .chk{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;color:var(--ink);cursor:pointer}
+  .nap{color:var(--muted);font-size:13px;margin:8px 0 0}
+  .redovi{display:flex;flex-direction:column;gap:10px}
+  .red{border:1px solid var(--line);border-radius:6px;padding:12px 14px;display:grid;grid-template-columns:200px minmax(0,1fr) auto;gap:4px 14px;align-items:center;transition:border-color .2s,box-shadow .2s}
+  .red.najbolji{border-color:var(--band);box-shadow:0 0 0 2px color-mix(in srgb,var(--band) 35%,transparent)}
+  .red b{font:700 16px/1.2 var(--serif);display:flex;align-items:center;gap:8px}
+  .red b i{width:10px;height:10px;border-radius:2px;background:var(--band);display:inline-block}
+  .red small{color:var(--muted);font-size:12px}
+  .stub{height:10px;background:var(--line);border-radius:5px;overflow:hidden}
+  .stub div{height:100%;background:color-mix(in srgb,var(--band) 70%,transparent);border-radius:5px;transition:width .25s}
+  .cena{text-align:right;font:600 17px/1.2 var(--sans);white-space:nowrap}
+  .cena small{display:block;font-weight:400}
+  .formula{grid-column:1/-1;color:var(--muted);font-size:12.5px}
+  .oznaka{font:600 10.5px/1 var(--mono);letter-spacing:.08em;color:var(--band);text-transform:uppercase}
+  .zbir{background:var(--p-soft);border-radius:6px;padding:14px 16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+  .zbir p{margin:0}
+  .btn{display:inline-block;background:var(--p);color:var(--p-text);text-decoration:none;padding:10px 16px;border-radius:4px;font-weight:600;font-size:14px}
+  .btn:hover{background:var(--p2);color:var(--p-text)}
+  /* пакети */
+  .paketi{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+  .paket{border:1px solid var(--line);border-top:4px solid var(--band);border-radius:6px;padding:20px;display:flex;flex-direction:column}
+  .paket h3{margin:0;font:700 20px/1.2 var(--serif)} .paket .za{color:var(--muted);font-size:13.5px;margin:2px 0 12px}
+  .paket .iznos{font:700 28px/1.1 var(--serif)} .paket .iznos small{font:400 13px var(--sans);color:var(--muted)}
+  .paket .god{color:var(--muted);font-size:13px;margin:2px 0 12px}
+  .paket ul{margin:0;padding-left:18px;font-size:14px} .paket li{margin:4px 0} .paket li.ne{color:var(--muted);list-style:'–  '}
+  table.t{width:100%;border-collapse:collapse;font-size:14px} .t td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top} .t td:last-child{text-align:right;white-space:nowrap}
+  .koraci{counter-reset:k;list-style:none;padding:0;margin:0} .koraci li{counter-increment:k;padding-left:34px;position:relative;margin:10px 0}
+  .koraci li::before{content:counter(k);position:absolute;left:0;top:0;width:24px;height:24px;border-radius:50%;background:var(--p);color:var(--p-text);font:600 13px/24px var(--sans);text-align:center}
+  .note{background:var(--note);color:var(--note-text);border-radius:4px;padding:12px 14px;font-size:14px;margin-top:12px}
+  .hero .pdv-hero{margin-top:10px;font-size:13.5px;color:var(--hero-muted);opacity:.9}
+  .zbir small{color:var(--muted);font-size:12.5px}
+  details{border-bottom:1px solid var(--line);padding:10px 0} details:last-child{border-bottom:0}
+  summary{cursor:pointer;font-weight:600;list-style:none} summary::-webkit-details-marker{display:none}
+  summary::before{content:'+';display:inline-block;width:20px;color:var(--a-text);font-weight:700} details[open] summary::before{content:'–'}
+  details p{margin:8px 0 2px 20px;color:var(--muted);font-size:14.5px}
+  footer{text-align:center;color:var(--muted);font-size:13px;padding:20px 16px 32px} footer img{height:28px;display:block;margin:0 auto 10px}
+  @media (max-width:820px){ .calc{grid-template-columns:1fr} }
+  @media (max-width:560px){ h1{font-size:32px} .alati,.nazad{position:static;justify-content:center;margin-bottom:12px;display:flex} .red{grid-template-columns:1fr auto} .red .stub{grid-column:1/-1;order:3} .figura input{font-size:52px} }
+</style>
+</head>
+<body>
+<div class="hero">
+  <a class="nazad" href="./">← Образац+ · преузимање</a>
+  <div class="alati bez-prevoda">
+    <div class="prekidac" role="group" aria-label="Писмо / Pismo">
+      <button type="button" data-pismo="cir" aria-pressed="true">Ћирилица</button><button type="button" data-pismo="lat" aria-pressed="false">Latinica</button>
+    </div>
+    <div class="prekidac" role="group" aria-label="Тема / Tema">
+      <button type="button" data-tema="svetlo" aria-pressed="false">☀</button><button type="button" data-tema="tamno" aria-pressed="false">☾</button>
+    </div>
+  </div>
+  <h1>Цене Образац<span class="plus">+</span></h1>
+  <p>Плаћа се по броју корисника – рачунара на којима канцеларија ради у програму. Месечна претплата, или годишње уз два месеца бесплатно; кључ се уноси једном. Пробна верзија је бесплатна: 14 дана или 30 штампи.</p>
+  <p class="pdv-hero">Цене су без ПДВ-а. Betania Tech тренутно није у систему ПДВ-а, па се ПДВ не обрачунава – износ из калкулатора је коначан.</p>
+</div>
+
+<main>
+<section id="kalkulator">
+  <div class="calc">
+    <div>
+      <div class="eyebrow">Калкулатор</div>
+      <h2 style="font:700 22px/1.25 var(--serif);margin:0">Колико људи у канцеларији ради у програму?</h2>
+      <div class="figura">
+        <input id="broj" type="number" inputmode="numeric" min="1" max="500" step="1" value="4" aria-label="Број корисника">
+        <span class="jed" id="jed">корисника</span>
+      </div>
+      <input id="klizac" type="range" min="1" max="30" step="1" value="4" aria-label="Број корисника">
+      <div class="lestvica" id="lestvica" aria-hidden="true"></div>
+      <div class="crte" id="crte" aria-hidden="true"></div>
+      <p class="nap" style="margin-top:2px">Трака показује где је који пакет најповољнији.</p>
+      <div class="prekidaci">
+        <div class="seg" role="group" aria-label="Плаћање">
+          <button type="button" data-period="mesec" aria-pressed="true">Месечно</button><button type="button" data-period="godina" aria-pressed="false">Годишње · 2 месеца гратис</button>
+        </div>
+        <label class="chk"><input type="checkbox" id="pripravnik"> адвокатски приправник (Соло −50%)</label>
+      </div>
+      <p class="nap">Корисник = рачунар на коме ради Образац+ (особа са лаптопом и рачунаром у канцеларији у пакету Соло рачуна се једном). Цене су у динарима, без ПДВ-а. <b>Betania Tech тренутно није у систему ПДВ-а, па се ПДВ не обрачунава – износ из калкулатора је коначан.</b></p>
+    </div>
+    <div class="redovi" id="redovi"></div>
+  </div>
+  <div class="zbir" id="zbir" style="margin-top:16px"></div>
+</section>
+
+<section>
+  <h2>Пакети</h2>
+  <div class="paketi" id="paketi"></div>
+</section>
+
+<section>
+  <h2>Шаблони по мери</h2>
+  <p style="margin-top:0">Треба вам документ којег нема међу шаблонима? У програму кликните <b>„✉ Затражи шаблон“</b> – направимо га, а стиже свим корисницима у следећем ажурирању. Исправка грешке у постојећем шаблону је увек бесплатна.</p>
+  <table class="t">
+    <tr><td>Укључено у пакет Канцеларија</td><td>2 шаблона годишње</td></tr>
+    <tr><td>Укључено у пакет Велика канцеларија</td><td>6 шаблона годишње</td></tr>
+    <tr><td>Једноставан Word документ (изјава, овлашћење, сагласност)</td><td>6.000 дин</td></tr>
+    <tr><td>Сложен уговор или званични PDF образац</td><td>до 12.000 дин</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2>Како се купује</h2>
+  <ol class="koraci">
+    <li>Инсталирајте програм са <a href="./">странице за преузимање</a> и пробајте га – 14 дана или 30 штампи, без обавезе.</li>
+    <li>Изаберите пакет и плаћање у калкулатору и кликните „Затражи предрачун“ (или у програму: <b>Подршка → Лиценца и куповина</b>).</li>
+    <li>Предрачун стиже на вашу е-пошту; уплата на рачун Betania Tech – уговор се не потписује. Цене су без ПДВ-а; Betania Tech тренутно није у систему ПДВ-а, па се ПДВ не обрачунава.</li>
+    <li>Претплатни кључ стиже мејлом. <b>Уноси се једном</b> (Подешавања → Лиценца) – канцеларија добија администраторски кључ и кориснички за цело особље.</li>
+    <li>Претплата се продужава <b>само уплатом</b> по следећем предрачуну, месечно или годишње – нови кључ не треба. Програм сам види продужење при следећој провери.</li>
+  </ol>
+  <p class="note">Програм проверава претплату при покретању и на неколико сати и <b>ради без интернета до 14 дана</b> од последње провере. AI помоћник и AI претрага шаблона раде уз интернет; дневни број позива зависи од пакета.</p>
+</section>
+
+<section>
+  <h2>Честа питања</h2>
+  <details><summary>Шта је „корисник“?</summary>
+    <p>Рачунар на коме ради Образац+. Сваки рачунар се при уносу кључа пријави као један корисник. Кад су сва места у пакету заузета, нови рачунар се не активира – <b>администратор канцеларије у програму (Подешавања → Лиценца) види списак рачунара и ослободи стари</b>, нпр. кад замените рачунар. У пакету Соло лаптоп исте особе не рачуна се посебно.</p></details>
+  <details><summary>Шта ако нема интернета?</summary>
+    <p>Програм ради као и обично до 14 дана од последње успешне провере претплате; штампа и чување докумената не траже интернет. Чим се веза врати, провера иде сама. Без интернета не раде само AI помоћник и слање поруке подршци.</p></details>
+  <details><summary>Шта се дешава кад претплата истекне?</summary>
+    <p>Програм ради још 7 дана уз упозорење, а затим се закључавају штампа и чување (преглед докумената остаје). Чим уплата легне, програм се откључа при следећој провери – нови кључ не треба.</p></details>
+  <details><summary>Како да променим пакет или број рачунара?</summary>
+    <p>Пишите нам из програма (<b>Подршка → Лиценца и куповина</b>) или на <a href="mailto:hello@betania.io">hello@betania.io</a>. Промена важи на свим рачунарима канцеларије при следећој провери, са истим кључем; разлика се обрачунава на следећем предрачуну.</p></details>
+  <details><summary>Шта са подацима странака?</summary>
+    <p>Ништа од личних података странака се не чува – ни у програму ни на нашем серверу. Провера претплате шаље само кључ и насумичну ознаку рачунара; преглед рада канцеларије нема ниједан податак о физичком лицу. AI помоћник пре слања замени имена, ЈМБГ и адресе ознакама.</p></details>
+  <details><summary>Да ли постојећи кључеви и даље важе?</summary>
+    <p>Да. Кључ са датумом важења ради као и до сада, без провере преко интернета, до датума уписаног у њему.</p></details>
+</section>
+</main>
+
+<footer><img src="betania-wide.svg" alt="Betania">Образац+ v1.1.0 · © Betania · <a href="mailto:hello@betania.io">hello@betania.io</a></footer>
+
+<script>
+// Цене и правила – једино место које се мења (предлог 9. 11. 2026, чека Миланову потврду).
+const PAKETI = [
+  { id: 'solo', naziv: 'Соло', za: 'адвокат без запослених, приправник', boja: '--solo',
+    mesec: 1290, ukljuceno: 1, poKorisniku: 1290, ai: '50 дневно по кориснику', org: false, sabloni: 0, podrska: 'мејл' },
+  { id: 'kanc', naziv: 'Канцеларија', za: 'адвокатска канцеларија', boja: '--kanc',
+    mesec: 3490, ukljuceno: 5, poKorisniku: 690, ai: '200 дневно', org: true, sabloni: 2, podrska: 'мејл' },
+  { id: 'velika', naziv: 'Велика канцеларија', za: 'јавни бележник, већа канцеларија', boja: '--velika',
+    mesec: 7990, ukljuceno: 15, poKorisniku: 490, ai: '600 дневно', org: true, sabloni: 6, podrska: 'исти радни дан + помоћ при инсталацији' },
+];
+const GODISNJE_MESECI = 10;          // годишње = 10 месеци (2 гратис)
+const PRIPRAVNIK = 0.5;              // Соло за адвокатског приправника
+const SLIDER_MAX = 30, RUCNO_MAX = 500;
+const KONTAKT = 'hello@betania.io';
+
+const $ = s => document.querySelector(s);
+const din = n => Math.round(n).toLocaleString('sr-RS') + ' дин';
+const kor = n => n + ' ' + (n % 10 === 1 && n % 100 !== 11 ? 'корисник' : 'корисника');
+let broj = 4, period = 'mesec';
+
+function mesecno(p, n, pripravnik){
+  if (p.id === 'solo') return p.poKorisniku * n * (pripravnik ? PRIPRAVNIK : 1);
+  return p.mesec + Math.max(0, n - p.ukljuceno) * p.poKorisniku;
+}
+const zaPeriod = m => period === 'godina' ? m * GODISNJE_MESECI : m;
+const pripr = () => $('#pripravnik').checked;
+function najbolji(n){
+  let b = PAKETI[0];
+  for (const p of PAKETI) if (mesecno(p, n, pripr()) < mesecno(b, n, pripr())) b = p;
+  return b;
+}
+function formula(p, n){
+  if (p.id === 'solo') return `${din(p.poKorisniku)} × ${kor(n)}${pripr() ? ' × 50% (приправник)' : ''}` + (period === 'godina' ? ` × ${GODISNJE_MESECI} месеци` : ' месечно');
+  const visak = Math.max(0, n - p.ukljuceno);
+  return `${din(p.mesec)} (укључено ${kor(p.ukljuceno)})` + (visak ? ` + ${visak} × ${din(p.poKorisniku)}` : '') + (period === 'godina' ? ` × ${GODISNJE_MESECI} месеци` : ' месечно');
+}
+function opseg(p){                    // где је пакет најповољнији (за натпис у реду)
+  const runs = []; let od = null;
+  for (let n = 1; n <= 200; n++) { const da = najbolji(n).id === p.id;
+    if (da && od === null) od = n; if (!da && od !== null) { runs.push([od, n - 1]); od = null; } }
+  if (od !== null) runs.push([od, null]);
+  if (!runs.length) return 'никад најповољнији';
+  return 'најповољнији ' + runs.map(([a, b]) => b === null ? `од ${a}` : a === b ? `за ${a}` : `${a}–${b}`).join(', ') + ' корисника';
+}
+
+function crtaj(){
+  const max = Math.max(SLIDER_MAX, Math.ceil(broj / 10) * 10);
+  const k = $('#klizac'); k.max = max; k.value = Math.min(broj, max);
+  unos.style.width = (String(unos.value || broj).length + 0.4) + 'ch';      // велики број је поље – ширина по садржају
+  $('#jed').textContent = (broj % 10 === 1 && broj % 100 !== 11 ? 'корисник' : 'корисника');
+  // лествица: најповољнији пакет по броју корисника
+  const trake = []; let pocetak = 1, tekuci = najbolji(1);
+  for (let n = 2; n <= max + 1; n++) { const b = n <= max ? najbolji(n) : null;
+    if (!b || b.id !== tekuci.id) { trake.push([tekuci, pocetak, n - 1]); pocetak = n; tekuci = b; } }
+  const best = najbolji(broj);
+  $('#lestvica').innerHTML = trake.map(([p, a, b]) => `<div class="traka ${broj >= a && broj <= b ? 'ovde' : ''}" style="--band:var(${p.boja});width:${(b - a + 1) / max * 100}%">${p.naziv}</div>`).join('');
+  const crte = [1, ...trake.slice(1).map(t => t[1]), max].filter((v, i, a) => a.indexOf(v) === i);
+  $('#crte').innerHTML = crte.map(v => `<span style="left:${(v - 1) / (max - 1) * 100}%">${v}</span>`).join('');
+  // редови пакета
+  const ceneP = PAKETI.map(p => zaPeriod(mesecno(p, broj, pripr())));
+  const najmanja = Math.min(...ceneP), najveca = Math.max(...ceneP);
+  $('#redovi').innerHTML = PAKETI.map((p, i) => { const c = ceneP[i], razlika = c - najmanja, hot = p.id === best.id;
+    return `<div class="red ${hot ? 'najbolji' : ''}" style="--band:var(${p.boja})">
+      <div><b><i></i>${p.naziv}</b><small>${opseg(p)}</small></div>
+      <div class="stub"><div style="width:${Math.max(3, c / najveca * 100)}%"></div></div>
+      <div class="cena">${din(c)}<small>${period === 'godina' ? 'годишње' : 'месечно'}${razlika > 0 ? ` · +${din(razlika)}` : ''}</small></div>
+      <div class="formula">${hot ? '<span class="oznaka">најповољније · </span>' : ''}${formula(p, broj)}${!p.org && broj > 1 ? ' · без кључа организације' : ''}</div></div>`; }).join('');
+  // збир и предрачун
+  const c = zaPeriod(mesecno(best, broj, pripr()));
+  const tekst = `Пакет: ${best.naziv}\nКорисника: ${broj}\nПлаћање: ${period === 'godina' ? 'годишње' : 'месечно'}${pripr() && best.id === 'solo' ? '\nАдвокатски приправник (попуст 50%)' : ''}\nИзнос по калкулатору: ${din(c)} ${period === 'godina' ? 'годишње' : 'месечно'}, без ПДВ-а (Betania Tech није у систему ПДВ-а)\n\nПодаци за предрачун (назив, адреса, ПИБ, матични број):\n`;
+  $('#zbir').innerHTML = `<p>За <b>${kor(broj)}</b> најповољнији је пакет <b>${best.naziv}</b>: <b>${din(c)}</b> ${period === 'godina' ? `годишње (≈ ${din(c / 12)} месечно)` : 'месечно'}${period === 'mesec' ? ` · годишње би било ${din(mesecno(best, broj, pripr()) * GODISNJE_MESECI)}` : ''}.<br><small>Без ПДВ-а – Betania Tech није у систему ПДВ-а, па је ово коначан износ.</small></p>
+    <a class="btn" href="mailto:${KONTAKT}?subject=${encodeURIComponent('Предрачун – Образац+ ' + best.naziv)}&body=${encodeURIComponent(tekst)}">Затражи предрачун</a>`;
+  // картице пакета
+  $('#paketi').innerHTML = PAKETI.map(p => { const m = p.id === 'solo' ? p.poKorisniku : p.mesec;
+    return `<div class="paket" style="--band:var(${p.boja})"><h3>${p.naziv}</h3><div class="za">${p.za}</div>
+      <div class="iznos">${din(m)} <small>/ месечно${p.id === 'solo' ? ' по кориснику' : ''}</small></div>
+      <div class="god">годишње ${din(m * GODISNJE_MESECI)}${p.id === 'solo' ? ' по кориснику' : ''}</div>
+      <ul>${p.id === 'solo' ? '<li>1 корисник (+ лаптоп исте особе)</li>' : `<li>укључено ${kor(p.ukljuceno)}, сваки следећи ${din(p.poKorisniku)} месечно</li>`}
+        <li>сви шаблони, PDF и Word, ажурирања</li><li>AI помоћник и AI претрага: ${p.ai}</li>
+        <li class="${p.org ? '' : 'ne'}">кључ организације: администратор + особље, преглед рада, адреса и подножје за све рачунаре</li>
+        <li class="${p.sabloni ? '' : 'ne'}">${p.sabloni ? `${p.sabloni} нова шаблона по мери годишње` : 'шаблони по мери – по ценовнику'}</li>
+        <li>подршка: ${p.podrska}</li>${p.id === 'solo' ? '<li>адвокатски приправник: 50% попуста</li>' : ''}</ul></div>`; }).join('');
+}
+
+const unos = $('#broj');
+unos.addEventListener('input', () => { unos.style.width = (Math.max(1, unos.value.length) + 0.4) + 'ch'; const n = Number(unos.value); if (Number.isInteger(n) && n >= 1 && n <= RUCNO_MAX) { broj = n; crtaj(); } });
+unos.addEventListener('blur', () => { unos.value = broj; });
+unos.addEventListener('focus', () => unos.select());
+$('#klizac').addEventListener('input', e => { broj = Number(e.target.value); unos.value = broj; crtaj(); });
+$('#pripravnik').addEventListener('change', crtaj);
+document.querySelectorAll('[data-period]').forEach(b => b.addEventListener('click', () => {
+  period = b.dataset.period; document.querySelectorAll('[data-period]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); crtaj(); }));
+crtaj();
+</script>
+<script>
+// Тема: дугмад ☀ / ☾ (памти се); без избора важи подешавање система.
+(function(){
+  const dugmad = document.querySelectorAll('[data-tema]');
+  const tamna = () => document.documentElement.dataset.tema ? document.documentElement.dataset.tema === 'tamno'
+                                                            : matchMedia('(prefers-color-scheme: dark)').matches;
+  const osvezi = () => dugmad.forEach(b => b.setAttribute('aria-pressed', String((b.dataset.tema === 'tamno') === tamna())));
+  dugmad.forEach(b => b.addEventListener('click', () => {
+    document.documentElement.dataset.tema = b.dataset.tema;
+    try { localStorage.setItem('obrazac-tema', b.dataset.tema); } catch (e) {}
+    osvezi();
+  }));
+  try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', osvezi); } catch (e) {}
+  osvezi();
+})();
+// Писмо странице: ћирилица је подразумевана, латиница се бира дугметом (памти се) или везом ?pismo=lat.
+// Пресловљава се сваки текст на страници, и онај који скрипта допише после учитавања (нпр. ознаке верзија).
+(function(){
+  const JEDNO = {'А':'A','Б':'B','В':'V','Г':'G','Д':'D','Ђ':'Đ','Е':'E','Ж':'Ž','З':'Z','И':'I','Ј':'J','К':'K','Л':'L',
+    'М':'M','Н':'N','О':'O','П':'P','Р':'R','С':'S','Т':'T','Ћ':'Ć','У':'U','Ф':'F','Х':'H','Ц':'C','Ч':'Č','Ш':'Š',
+    'а':'a','б':'b','в':'v','г':'g','д':'d','ђ':'đ','е':'e','ж':'ž','з':'z','и':'i','ј':'j','к':'k','л':'l','м':'m',
+    'н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','ћ':'ć','у':'u','ф':'f','х':'h','ц':'c','ч':'č','ш':'š',
+    'љ':'lj','њ':'nj','џ':'dž'};
+  const DVA = {'Љ':['Lj','LJ'],'Њ':['Nj','NJ'],'Џ':['Dž','DŽ']};
+  const velika = c => !!c && c !== c.toLowerCase() && c === c.toUpperCase();
+  function uLat(t){
+    let o = '';
+    for (let i = 0; i < t.length; i++) {
+      const c = t[i];
+      if (DVA[c]) { const sl = t[i+1] || '', pr = t[i-1] || '';
+        o += (velika(sl) || (!/\S/.test(sl) && velika(pr))) ? DVA[c][1] : DVA[c][0]; }   // ЉУБИЦА → LJUBICA, Љубица → Ljubica
+      else o += (JEDNO[c] !== undefined ? JEDNO[c] : c);
+    }
+    return o;
+  }
+  const CIR = /[Ѐ-ӿ]/, ATR = ['alt', 'title', 'aria-label', 'placeholder'];
+  const origTekst = new WeakMap(), origAtr = new WeakMap(), origNaslov = document.title;
+  let pismo = 'cir';
+  const preskoci = el => el.closest && el.closest('script,style,.bez-prevoda');
+  function tekst(n){
+    if (!n.parentElement || preskoci(n.parentElement)) return;
+    if (!origTekst.has(n)) { if (!CIR.test(n.nodeValue)) return; origTekst.set(n, n.nodeValue); }
+    const cilj = pismo === 'lat' ? uLat(origTekst.get(n)) : origTekst.get(n);
+    if (n.nodeValue !== cilj) n.nodeValue = cilj;
+  }
+  function element(el){
+    if (preskoci(el)) return;
+    let o = origAtr.get(el);
+    for (const a of ATR) { const v = el.getAttribute && el.getAttribute(a); if (v == null) continue;
+      if (!o) { o = {}; origAtr.set(el, o); }
+      if (!(a in o)) { if (!CIR.test(v)) continue; o[a] = v; }
+      el.setAttribute(a, pismo === 'lat' ? uLat(o[a]) : o[a]); }
+  }
+  function prodji(koren){
+    if (koren.nodeType === 3) { tekst(koren); return; }
+    if (koren.nodeType !== 1) return;
+    element(koren);
+    const w = document.createTreeWalker(koren, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
+    for (let n = w.nextNode(); n; n = w.nextNode()) n.nodeType === 3 ? tekst(n) : element(n);
+  }
+  function postavi(p, zapamti){
+    pismo = p === 'lat' ? 'lat' : 'cir';
+    document.documentElement.lang = pismo === 'lat' ? 'sr-Latn' : 'sr-Cyrl';
+    document.title = pismo === 'lat' ? uLat(origNaslov) : origNaslov;
+    prodji(document.body);
+    document.querySelectorAll('[data-pismo]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.pismo === pismo)));
+    if (zapamti) try { localStorage.setItem('obrazac-pismo', pismo); } catch (e) {}
+  }
+  new MutationObserver(ms => { if (pismo !== 'lat') return;
+    for (const m of ms) m.addedNodes.forEach(prodji); }).observe(document.body, {childList: true, subtree: true});
+  document.querySelectorAll('[data-pismo]').forEach(b => b.addEventListener('click', () => postavi(b.dataset.pismo, true)));
+  let pocetno = 'cir';
+  try { pocetno = localStorage.getItem('obrazac-pismo') || 'cir'; } catch (e) {}
+  const izVeze = new URLSearchParams(location.search).get('pismo');
+  if (izVeze === 'lat' || izVeze === 'cir') pocetno = izVeze;
+  postavi(pocetno, false);
+})();
+</script>
+</body>
+</html>
