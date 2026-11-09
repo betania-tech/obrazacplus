@@ -96,17 +96,20 @@
 <main>
   <section id="preuzimanje">
     <h2>Преузимање</h2>
-    <div class="uskoro" id="uskoro"><b>Прво издање стиже ускоро.</b> До тада инсталацију и пробни приступ добијате на
-      <a href="mailto:hello@betania.io?subject=%D0%9E%D0%B1%D1%80%D0%B0%D0%B7%D0%B0%D1%86%2B%20-%20%D0%B8%D0%BD%D1%81%D1%82%D0%B0%D0%BB%D0%B0%D1%86%D0%B8%D1%98%D0%B0">hello@betania.io</a>.
-      Кад издање изађе, дугмад испод воде право на инсталатер, а програм сам јавља кад стигне нова верзија.</div>
+    <div class="uskoro" id="uvod"><b>Образац+ 1.0.0</b> за Windows, macOS и Linux. После инсталације програм одмах ради као
+      пробна верзија; лиценцни кључ се уноси у Подешавања → Лиценца. Програм сам јавља кад стигне нова верзија.</div>
     <div class="cards">
       <div class="card"><div class="kod">WIN</div><h3>Windows 10 / 11</h3><p>Инсталациони чаробњак (.exe) – укључује сервис за паметне картице.</p>
-        <a class="btn ceka" id="dlWin" href="mailto:hello@betania.io">Ускоро</a> <small class="v" id="vWin"></small></div>
+        <a class="btn" id="dlWin" href="https://github.com/betania-tech/obrazacplus/releases/latest/download/ObrazacPlus-setup.exe">⬇ Преузми за Windows</a> <small class="v" id="vWin">верзија 1.0.0</small></div>
       <div class="card"><div class="kod">MAC</div><h3>macOS</h3><p>Инсталациони пакет (.pkg).</p>
-        <a class="btn ceka" id="dlMac" href="mailto:hello@betania.io">Ускоро</a> <small class="v" id="vMac"></small></div>
+        <a class="btn" id="dlMac" href="https://github.com/betania-tech/obrazacplus/releases/latest/download/ObrazacPlus.pkg">⬇ Преузми за macOS</a> <small class="v" id="vMac">верзија 1.0.0</small></div>
       <div class="card"><div class="kod">LINUX</div><h3>Linux (Ubuntu / Debian)</h3><p>Пакет .deb – дупли клик или <code>sudo apt install ./obrazacplus_amd64.deb</code></p>
-        <a class="btn ceka" id="dlDeb" href="mailto:hello@betania.io">Ускоро</a> <small class="v" id="vDeb"></small></div>
+        <a class="btn" id="dlDeb" href="https://github.com/betania-tech/obrazacplus/releases/latest/download/obrazacplus_amd64.deb">⬇ Преузми .deb</a> <small class="v" id="vDeb">верзија 1.0.0</small></div>
     </div>
+    <div class="note" style="margin-top:14px"><b>Инсталатери још нису дигитално потписани</b>, па систем при првом покретању
+      упозорава. <b>Windows:</b> „Windows protected your PC“ → <i>More info</i> → <i>Run anyway</i>.
+      <b>macOS:</b> десни клик на ObrazacPlus.pkg → <i>Open</i> (или <i>System Settings → Privacy &amp; Security → Open Anyway</i>).
+      <b>Linux:</b> <code>sudo apt install ./obrazacplus_amd64.deb</code>.</div>
   </section>
 
   <section>
@@ -122,11 +125,16 @@
            ћирилица или латиница, у светлој или тамној теми.</p></div>
       <div class="card"><div class="kod">ШАБЛОНИ</div><h3>16 готових Word шаблона</h3>
         <p>Пуномоћја, овлашћења и потврде, изјаве, сагласности и уговори (купопродаја возила, закуп стана, поклон, зајам), уз
-           извод са личне карте као Челик. Додајте и свој Word шаблон или празан PDF образац.</p></div>
+           извод са личне карте као Челик. Треба вам документ којег нема? У програму <b>✉ Затражи шаблон</b> – Betania га
+           прави, а стиже у следећем ажурирању.</p></div>
       <div class="card"><div class="kod">AI</div><h3>AI помоћник за текст</h3>
         <p>Уз слободна поља (обим пуномоћја, опис посла, напомене): <b>„Среди правнички“</b> (Claude Sonnet 5.5) и
-           <b>„Исправи грешке“</b> (Claude Haiku 5.5). Шаље се само текст поља – имена и ЈМБГ се пре слања замењују ознакама.
+           <b>„Исправи грешке“</b> (Claude Haiku 5.5). На почетној, кад обична претрага не нађе шаблон, <b>„Питај AI“</b> га
+           нађе по опису. Шаље се само текст поља или упит – имена и ЈМБГ се пре слања замењују ознакама.
            Уз лиценцни кључ и интернет.</p></div>
+      <div class="card"><div class="kod">ПОДРШКА</div><h3>Подршка из програма</h3>
+        <p>Дугме <b>Подршка</b> у програму: захтев за нови шаблон, питање, пријава грешке или лиценца и куповина. Порука
+           стиже Betania тиму, а одговор на е-пошту коју упишете – ради и у пробној верзији.</p></div>
     </div>
   </section>
 
@@ -146,7 +154,8 @@
        документа, демо лице и симулација штампе раде и после тога. За пуну верзију унесите лиценцни кључ у Подешавања →
        Лиценца; кључ важи до датума који је у њему уписан и ради без интернета.</p>
     <div class="note">Кључеви Окна овде не важе и обрнуто – Образац+ је посебан производ. Шаблони су почетни текстови: програм
-      попуњава податке, а за садржину правног посла одговара канцеларија. Сваки шаблон се мења у програму.</div>
+      попуњава податке, а за садржину правног посла одговара канцеларија. Готов документ може да се сачува као Word и
+      доради; измену шаблона или нови шаблон затражите из програма.</div>
   </section>
 
   <div class="dve">
@@ -161,7 +170,7 @@
     <section>
       <h2>Заштита података</h2>
       <p>Ништа од личних података странака се не чува – ни дневник ни картотека. Једини изузетак је „Моја лична карта“:
-         оператер може једном да сачува своју картицу. AI помоћник шаље само текст поља, без података са картице.</p>
+         оператер може једном да сачува своју картицу. AI помоћник шаље само текст поља или упит претраге, без података са картице.</p>
     </section>
   </div>
 
@@ -172,11 +181,11 @@
 
   <section>
     <h2>Контакт и лиценце</h2>
-    <p>Софтвер израдила <b>Betania</b>. За инсталацију, лиценцни кључ, питања и подршку:
+    <p>Софтвер израдила <b>Betania</b>. Питања, лиценце и захтеви за шаблоне: дугме <b>Подршка</b> у програму или
        <a href="mailto:hello@betania.io">hello@betania.io</a> · <a href="https://betania.io/apps/obrazacplus">betania.io/apps/obrazacplus</a></p>
   </section>
 </main>
-<footer><img src="betania-wide.svg" alt="Betania">Образац+ <span id="ver">–</span> · © Betania · <a href="mailto:hello@betania.io">hello@betania.io</a></footer>
+<footer><img src="betania-wide.svg" alt="Betania">Образац+ <span id="ver">v1.0.0</span> · © Betania · <a href="mailto:hello@betania.io">hello@betania.io</a></footer>
 <script>
   // Издања: GitHub Releases јавног репоа, тагови v*, стални називи инсталатера (исти као у obrazacplus/azuriranje.py).
   const REPO = "betania-tech/obrazacplus";
@@ -196,18 +205,17 @@
       if (!r) continue;
       const a = document.getElementById(id);
       a.href = `https://github.com/${REPO}/releases/download/${r.tag_name}/${fajl}`;
-      a.textContent = tekst; a.classList.remove('ceka');
+      a.textContent = tekst;
       document.getElementById(vid).textContent = 'верзија ' + r.tag_name;
       ima = true;
     }
-    if (ima) document.getElementById('uskoro').hidden = true;
     if (izd.length) document.getElementById('ver').textContent = izd[0].tag_name;
     const datum = d => d ? `${d.slice(8,10)}.${d.slice(5,7)}.${d.slice(0,4)}.` : '';
     const veze = r => { const a = (r.assets || []).filter(x => x.state === 'uploaded'), m = a.filter(x => NAZIV[x.name]);
       return (m.length ? m : a).map(x => `<a href="${x.browser_download_url}">${NAZIV[x.name] || x.name}</a>`).join(''); };
     lista.innerHTML = izd.length ? '<table>' + izd.map(r =>
       `<tr><td>${r.tag_name}</td><td>${datum(r.published_at)}</td><td>${veze(r)}<a class="opis" href="${r.html_url}">опис издања</a></td></tr>`).join('') + '</table>'
-      : 'Још нема објављених издања – прво стиже ускоро.';
+      : `Издања: <a href="https://github.com/${REPO}/releases">github.com/${REPO}/releases</a>`;
   }).catch(() => { lista.innerHTML = `Списак издања: <a href="https://github.com/${REPO}/releases">github.com/${REPO}/releases</a>`; });
 </script>
 <script>
