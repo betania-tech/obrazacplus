@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="sr-Cyrl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Образац+ – преузимање</title>
+<meta name="description" content="Образац+: лична карта у читач, попуњено пуномоћје, изјава, сагласност или уговор на штампачу или као PDF и Word. За адвокате, адвокатске приправнике и јавне бележнике. Без интернета и без Office-а.">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<script>
+  // Тема пре првог исцртавања (без треперења): запамћен избор, иначе подешавање система.
+  (function(){ try { var t = localStorage.getItem('obrazac-tema'); if (t === 'tamno' || t === 'svetlo') document.documentElement.dataset.tema = t; } catch (e) {} })();
+</script>
+<style>
+  /* Палета „Мастило и злато“ – исти токени као у програму (obrazacplus/static/index.html). */
+  :root{
+    --bg:#f4f1ea; --surf:#fbf9f4; --line:#ddd6c8; --ink:#15171f; --muted:#6a6a78;
+    --p:#27358f; --p2:#1d2870; --p-text:#fff; --p-soft:rgba(39,53,143,.08);
+    --a:#c89b3c; --a-text:#a67d25; --hero:#1b2463; --hero2:#0f1440; --hero-text:#f4f1ea; --hero-muted:#cfd3ef;
+    --note:#f6ecd6; --note-text:#6b4e12; --ok-bg:rgba(47,125,79,.1); --ok:#2f7d4f;
+    --shadow:0 10px 30px rgba(60,45,20,.10);
+    --serif:'PT Serif',Georgia,'Times New Roman',serif; --sans:'IBM Plex Sans',system-ui,'Segoe UI',Roboto,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,'SFMono-Regular',Menlo,monospace;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-tema="svetlo"]){
+      --bg:#10131f; --surf:#171b2b; --line:#2a3047; --ink:#eceaf3; --muted:#9b9db3;
+      --p:#7d8cf0; --p2:#95a2f5; --p-text:#10131f; --p-soft:rgba(125,140,240,.14);
+      --a:#e3b75a; --a-text:#e3b75a; --hero:#141a3d; --hero2:#0a0d1c; --hero-text:#eceaf3; --hero-muted:#a9aed6;
+      --note:rgba(227,183,90,.12); --note-text:#e3b75a; --ok-bg:rgba(92,196,138,.12); --ok:#5cc48a;
+      --shadow:0 10px 30px rgba(0,0,0,.45); color-scheme:dark;
+    }
+  }
+  :root[data-tema="tamno"]{
+    --bg:#10131f; --surf:#171b2b; --line:#2a3047; --ink:#eceaf3; --muted:#9b9db3;
+    --p:#7d8cf0; --p2:#95a2f5; --p-text:#10131f; --p-soft:rgba(125,140,240,.14);
+    --a:#e3b75a; --a-text:#e3b75a; --hero:#141a3d; --hero2:#0a0d1c; --hero-text:#eceaf3; --hero-muted:#a9aed6;
+    --note:rgba(227,183,90,.12); --note-text:#e3b75a; --ok-bg:rgba(92,196,138,.12); --ok:#5cc48a;
+    --shadow:0 10px 30px rgba(0,0,0,.45); color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font:16px/1.55 var(--sans);color:var(--ink);background:var(--bg)}
+  a{color:var(--p)} a:hover{color:var(--p2)}
+  .hero{position:relative;background:radial-gradient(circle at 50% 15%,var(--hero),var(--hero2) 72%);color:var(--hero-text);padding:64px 16px 72px;text-align:center}
+  .alati{position:absolute;top:14px;right:16px;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+  .prekidac{display:flex;border:1px solid rgba(244,241,234,.45);border-radius:999px;overflow:hidden}
+  .prekidac button{background:transparent;color:var(--hero-text);border:0;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}
+  .prekidac button[aria-pressed="true"]{background:var(--hero-text);color:var(--hero2);font-weight:600}
+  .hero img{width:120px;height:120px;border-radius:26px;box-shadow:0 20px 40px rgba(0,0,0,.4)}
+  h1{margin:18px 0 6px;font:700 42px/1.1 var(--serif);letter-spacing:.02em}
+  h1 .plus{color:var(--a)}
+  .hero p{color:var(--hero-muted);margin:0 auto;max-width:680px}
+  .hero .ko{display:inline-block;margin-top:14px;font:500 12px/1.7 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--a)}
+  main{position:relative;z-index:1;max-width:980px;margin:-32px auto 40px;padding:0 16px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+  .card{background:var(--surf);border:1px solid var(--line);border-radius:6px;padding:22px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+  .card h2,.card h3{margin:0 0 6px;font:700 18px/1.25 var(--serif)} .card p{margin:4px 0 14px;color:var(--muted);font-size:14px;flex:1}
+  .kod{font:500 11px/1 var(--mono);letter-spacing:.18em;color:var(--a-text);margin-bottom:8px}
+  .btn{display:inline-block;align-self:flex-start;background:var(--p);color:var(--p-text);text-decoration:none;padding:10px 16px;border-radius:4px;font-weight:600;font-size:14px}
+  .btn:hover{background:var(--p2);color:var(--p-text)}
+  .btn.ceka{background:transparent;color:var(--muted);border:1px dashed var(--line);font-weight:500}
+  .v{display:block;margin-top:8px;color:var(--muted);font:12px/1.4 var(--mono)}
+  section{background:var(--surf);border:1px solid var(--line);border-radius:6px;padding:24px;margin-top:16px;box-shadow:var(--shadow)}
+  section > h2{font:700 22px/1.25 var(--serif);margin:0 0 10px}
+  section .cards .card{box-shadow:none}
+  li{margin:4px 0} code{font-family:var(--mono);font-size:.9em;overflow-wrap:anywhere;background:var(--p-soft);padding:1px 6px;border-radius:4px}
+  .note{background:var(--note);color:var(--note-text);border-radius:4px;padding:12px 14px;font-size:14px;margin-top:12px}
+  .uskoro{background:var(--ok-bg);color:var(--ok);border-radius:4px;padding:12px 14px;font-size:14px;margin:0 0 14px}
+  .dve{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+  .dve section{margin-top:0}
+  .izdanja table{width:100%;border-collapse:collapse;font-size:14px}
+  .izdanja td{padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+  .izdanja td:first-child{white-space:nowrap;font-weight:600;font-family:var(--mono)} .izdanja td:nth-child(2){white-space:nowrap;color:var(--muted)}
+  .izdanja a{margin-right:12px;white-space:nowrap} .izdanja a.opis{color:var(--muted)}
+  footer{text-align:center;color:var(--muted);font-size:13px;padding:20px 16px 32px}
+  footer img{height:28px;display:block;margin:0 auto 10px}
+  @media (max-width:560px){ h1{font-size:34px} .alati{position:static;justify-content:center;margin-bottom:18px} }
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="alati bez-prevoda">
+    <div class="prekidac" role="group" aria-label="Писмо / Pismo">
+      <button type="button" data-pismo="cir" aria-pressed="true">Ћирилица</button><button type="button" data-pismo="lat" aria-pressed="false">Latinica</button>
+    </div>
+    <div class="prekidac" role="group" aria-label="Тема / Tema">
+      <button type="button" data-tema="svetlo" aria-pressed="false">☀</button><button type="button" data-tema="tamno" aria-pressed="false">☾</button>
+    </div>
+  </div>
+  <img src="logo.svg" alt="Образац+" width="120" height="120">
+  <h1>Образац<span class="plus">+</span></h1>
+  <p>Лична карта у читач – попуњен документ на штампачу. Програм прочита податке са чипа, ви изаберете шаблон
+     (пуномоћје, изјава, сагласност, уговор…) и допишете оно чега нема на картици, а документ се штампа или чува као PDF и Word.
+     Без интернета и без Office-а.</p>
+  <span class="ko">за адвокате, адвокатске приправнике и јавне бележнике</span>
+</div>
+<main>
+  <section id="preuzimanje">
+    <h2>Преузимање</h2>
+    <div class="uskoro" id="uskoro"><b>Прво издање стиже ускоро.</b> До тада инсталацију и пробни приступ добијате на
+      <a href="mailto:hello@betania.io?subject=%D0%9E%D0%B1%D1%80%D0%B0%D0%B7%D0%B0%D1%86%2B%20-%20%D0%B8%D0%BD%D1%81%D1%82%D0%B0%D0%BB%D0%B0%D1%86%D0%B8%D1%98%D0%B0">hello@betania.io</a>.
+      Кад издање изађе, дугмад испод воде право на инсталатер, а програм сам јавља кад стигне нова верзија.</div>
+    <div class="cards">
+      <div class="card"><div class="kod">WIN</div><h3>Windows 10 / 11</h3><p>Инсталациони чаробњак (.exe) – укључује сервис за паметне картице.</p>
+        <a class="btn ceka" id="dlWin" href="mailto:hello@betania.io">Ускоро</a> <small class="v" id="vWin"></small></div>
+      <div class="card"><div class="kod">MAC</div><h3>macOS</h3><p>Инсталациони пакет (.pkg).</p>
+        <a class="btn ceka" id="dlMac" href="mailto:hello@betania.io">Ускоро</a> <small class="v" id="vMac"></small></div>
+      <div class="card"><div class="kod">LINUX</div><h3>Linux (Ubuntu / Debian)</h3><p>Пакет .deb – дупли клик или <code>sudo apt install ./obrazacplus_amd64.deb</code></p>
+        <a class="btn ceka" id="dlDeb" href="mailto:hello@betania.io">Ускоро</a> <small class="v" id="vDeb"></small></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Шта програм ради</h2>
+    <p>Документ може имати више учесника – властодавац и пуномоћник, продавац и купац – и свако долази са своје картице.
+       Лице без чиповане личне карте се уноси ручно: датум рођења и пол се изводе из ЈМБГ-а, а погрешна контролна цифра даје упозорење.</p>
+    <div class="cards">
+      <div class="card"><div class="kod">ЧИП</div><h3>Са чипа на папир</h3>
+        <p>Картица у читачу иде у прву празну улогу документа. Име припадника мањине (нпр. SZABÓ ERZSÉBET) преноси се у
+           ћирилицу по Правопису, према језику који изабере оператер – <b class="bez-prevoda">САБО ЕРЖЕБЕТ (SZABÓ ERZSÉBET)</b>.</p></div>
+      <div class="card"><div class="kod">PDF · WORD</div><h3>Без Office-а и без интернета</h3>
+        <p>PDF и Word прави сам програм – не треба ни Word ни LibreOffice. Документ је увек ћирилицом; екран може бити
+           ћирилица или латиница, у светлој или тамној теми.</p></div>
+      <div class="card"><div class="kod">ШАБЛОНИ</div><h3>16 готових Word шаблона</h3>
+        <p>Пуномоћја, овлашћења и потврде, изјаве, сагласности и уговори (купопродаја возила, закуп стана, поклон, зајам), уз
+           извод са личне карте као Челик. Додајте и свој Word шаблон или празан PDF образац.</p></div>
+      <div class="card"><div class="kod">AI</div><h3>AI помоћник за текст</h3>
+        <p>Уз слободна поља (обим пуномоћја, опис посла, напомене): <b>„Среди правнички“</b> (Claude Sonnet 5.5) и
+           <b>„Исправи грешке“</b> (Claude Haiku 5.5). Шаље се само текст поља – имена и ЈМБГ се пре слања замењују ознакама.
+           Уз лиценцни кључ и интернет.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Кључ организације</h2>
+    <p>Канцеларија добија два кључа: <b>администраторски</b> и <b>кориснички</b> за цело особље. Стални подаци канцеларије –
+       назив, носилац, звање, место, ПИБ и матични број – су у самом кључу и иду на сваки документ. Адресу, телефон,
+       е-пошту и место потписа мења администратор, а промена стиже на све рачунаре канцеларије. Администратор види и
+       <b>преглед рада канцеларије</b>: документи, штампе, примерци и шаблони по месецу, са свих рачунара.</p>
+    <div class="note">Преглед рада нема ниједан податак о физичком лицу – ни о странци ни о запосленом: само дан без сата,
+      шаблон, врста излаза (штампа, PDF, Word) и број примерака. Програм ради и без интернета; подаци чекају следећу везу.</div>
+  </section>
+
+  <section>
+    <h2>Пробна верзија и лиценца</h2>
+    <p>Без кључа програм ради као <b>пробна верзија</b>: 14 дана од првог покретања и највише 30 штампи или чувања. Преглед
+       документа, демо лице и симулација штампе раде и после тога. За пуну верзију унесите лиценцни кључ у Подешавања →
+       Лиценца; кључ важи до датума који је у њему уписан и ради без интернета.</p>
+    <div class="note">Кључеви Окна овде не важе и обрнуто – Образац+ је посебан производ. Шаблони су почетни текстови: програм
+      попуњава податке, а за садржину правног посла одговара канцеларија. Сваки шаблон се мења у програму.</div>
+  </section>
+
+  <div class="dve">
+    <section>
+      <h2>Шта вам треба</h2>
+      <ul>
+        <li>USB читач паметних картица (било који PC/SC читач, нпр. Gemalto/Thales, ACS, Omnikey).</li>
+        <li>Штампач формата А4 – или само „Сачувај PDF / Word“.</li>
+        <li>Windows 10/11, macOS или Linux (Ubuntu / Debian).</li>
+      </ul>
+    </section>
+    <section>
+      <h2>Заштита података</h2>
+      <p>Ништа од личних података странака се не чува – ни дневник ни картотека. Једини изузетак је „Моја лична карта“:
+         оператер може једном да сачува своју картицу. AI помоћник шаље само текст поља, без података са картице.</p>
+    </section>
+  </div>
+
+  <section id="izdanja" class="izdanja">
+    <h2>Сва издања</h2>
+    <div id="listaIzdanja">Учитавам списак издања…</div>
+  </section>
+
+  <section>
+    <h2>Контакт и лиценце</h2>
+    <p>Софтвер израдила <b>Betania</b>. За инсталацију, лиценцни кључ, питања и подршку:
+       <a href="mailto:hello@betania.io">hello@betania.io</a> · <a href="https://betania.io/apps/obrazacplus">betania.io/apps/obrazacplus</a></p>
+  </section>
+</main>
+<footer><img src="betania-wide.svg" alt="Betania">Образац+ <span id="ver">–</span> · © Betania · <a href="mailto:hello@betania.io">hello@betania.io</a></footer>
+<script>
+  // Издања: GitHub Releases јавног репоа, тагови v*, стални називи инсталатера (исти као у obrazacplus/azuriranje.py).
+  const REPO = "betania-tech/obrazacplus";
+  const FAJL = { dlWin: ['ObrazacPlus-setup.exe', 'vWin', '⬇ Преузми за Windows'], dlMac: ['ObrazacPlus.pkg', 'vMac', '⬇ Преузми за macOS'],
+                 dlDeb: ['obrazacplus_amd64.deb', 'vDeb', '⬇ Преузми .deb'] };
+  const NAZIV = {'ObrazacPlus-setup.exe':'Windows','ObrazacPlus.pkg':'macOS','obrazacplus_amd64.deb':'Linux .deb'};
+  // GitHub API не враћа издања по броју верзије, па се сортира бројчано (1.0.10 је новије од 1.0.9).
+  const brojevi = t => t.replace(/^v/, '').split('.').map(n => parseInt(n, 10) || 0);
+  const novije = (a, b) => { const x = brojevi(a.tag_name), y = brojevi(b.tag_name);
+    for (let i = 0; i < Math.max(x.length, y.length); i++) { const d = (y[i] || 0) - (x[i] || 0); if (d) return d; } return 0; };
+  const lista = document.getElementById('listaIzdanja');
+  fetch(`https://api.github.com/repos/${REPO}/releases?per_page=100`).then(r => r.ok ? r.json() : []).then(sva => {
+    const izd = (Array.isArray(sva) ? sva : []).filter(r => /^v\d/.test(r.tag_name || '') && !r.draft).sort(novije);
+    let ima = false;
+    for (const [id, [fajl, vid, tekst]] of Object.entries(FAJL)) {
+      const r = izd.find(r => (r.assets || []).some(a => a.name === fajl && a.state === 'uploaded'));
+      if (!r) continue;
+      const a = document.getElementById(id);
+      a.href = `https://github.com/${REPO}/releases/download/${r.tag_name}/${fajl}`;
+      a.textContent = tekst; a.classList.remove('ceka');
+      document.getElementById(vid).textContent = 'верзија ' + r.tag_name;
+      ima = true;
+    }
+    if (ima) document.getElementById('uskoro').hidden = true;
+    if (izd.length) document.getElementById('ver').textContent = izd[0].tag_name;
+    const datum = d => d ? `${d.slice(8,10)}.${d.slice(5,7)}.${d.slice(0,4)}.` : '';
+    const veze = r => { const a = (r.assets || []).filter(x => x.state === 'uploaded'), m = a.filter(x => NAZIV[x.name]);
+      return (m.length ? m : a).map(x => `<a href="${x.browser_download_url}">${NAZIV[x.name] || x.name}</a>`).join(''); };
+    lista.innerHTML = izd.length ? '<table>' + izd.map(r =>
+      `<tr><td>${r.tag_name}</td><td>${datum(r.published_at)}</td><td>${veze(r)}<a class="opis" href="${r.html_url}">опис издања</a></td></tr>`).join('') + '</table>'
+      : 'Још нема објављених издања – прво стиже ускоро.';
+  }).catch(() => { lista.innerHTML = `Списак издања: <a href="https://github.com/${REPO}/releases">github.com/${REPO}/releases</a>`; });
+</script>
+<script>
+// Тема: дугмад ☀ / ☾ (памти се); без избора важи подешавање система.
+(function(){
+  const dugmad = document.querySelectorAll('[data-tema]');
+  const tamna = () => document.documentElement.dataset.tema ? document.documentElement.dataset.tema === 'tamno'
+                                                            : matchMedia('(prefers-color-scheme: dark)').matches;
+  const osvezi = () => dugmad.forEach(b => b.setAttribute('aria-pressed', String((b.dataset.tema === 'tamno') === tamna())));
+  dugmad.forEach(b => b.addEventListener('click', () => {
+    document.documentElement.dataset.tema = b.dataset.tema;
+    try { localStorage.setItem('obrazac-tema', b.dataset.tema); } catch (e) {}
+    osvezi();
+  }));
+  try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', osvezi); } catch (e) {}
+  osvezi();
+})();
+// Писмо странице: ћирилица је подразумевана, латиница се бира дугметом (памти се) или везом ?pismo=lat.
+// Пресловљава се сваки текст на страници, и онај који скрипта допише после учитавања (нпр. ознаке верзија).
+(function(){
+  const JEDNO = {'А':'A','Б':'B','В':'V','Г':'G','Д':'D','Ђ':'Đ','Е':'E','Ж':'Ž','З':'Z','И':'I','Ј':'J','К':'K','Л':'L',
+    'М':'M','Н':'N','О':'O','П':'P','Р':'R','С':'S','Т':'T','Ћ':'Ć','У':'U','Ф':'F','Х':'H','Ц':'C','Ч':'Č','Ш':'Š',
+    'а':'a','б':'b','в':'v','г':'g','д':'d','ђ':'đ','е':'e','ж':'ž','з':'z','и':'i','ј':'j','к':'k','л':'l','м':'m',
+    'н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','ћ':'ć','у':'u','ф':'f','х':'h','ц':'c','ч':'č','ш':'š',
+    'љ':'lj','њ':'nj','џ':'dž'};
+  const DVA = {'Љ':['Lj','LJ'],'Њ':['Nj','NJ'],'Џ':['Dž','DŽ']};
+  const velika = c => !!c && c !== c.toLowerCase() && c === c.toUpperCase();
+  function uLat(t){
+    let o = '';
+    for (let i = 0; i < t.length; i++) {
+      const c = t[i];
+      if (DVA[c]) { const sl = t[i+1] || '', pr = t[i-1] || '';
+        o += (velika(sl) || (!/\S/.test(sl) && velika(pr))) ? DVA[c][1] : DVA[c][0]; }   // ЉУБИЦА → LJUBICA, Љубица → Ljubica
+      else o += (JEDNO[c] !== undefined ? JEDNO[c] : c);
+    }
+    return o;
+  }
+  const CIR = /[Ѐ-ӿ]/, ATR = ['alt', 'title', 'aria-label', 'placeholder'];
+  const origTekst = new WeakMap(), origAtr = new WeakMap(), origNaslov = document.title;
+  let pismo = 'cir';
+  const preskoci = el => el.closest && el.closest('script,style,.bez-prevoda');
+  function tekst(n){
+    if (!n.parentElement || preskoci(n.parentElement)) return;
+    if (!origTekst.has(n)) { if (!CIR.test(n.nodeValue)) return; origTekst.set(n, n.nodeValue); }
+    const cilj = pismo === 'lat' ? uLat(origTekst.get(n)) : origTekst.get(n);
+    if (n.nodeValue !== cilj) n.nodeValue = cilj;
+  }
+  function element(el){
+    if (preskoci(el)) return;
+    let o = origAtr.get(el);
+    for (const a of ATR) { const v = el.getAttribute && el.getAttribute(a); if (v == null) continue;
+      if (!o) { o = {}; origAtr.set(el, o); }
+      if (!(a in o)) { if (!CIR.test(v)) continue; o[a] = v; }
+      el.setAttribute(a, pismo === 'lat' ? uLat(o[a]) : o[a]); }
+  }
+  function prodji(koren){
+    if (koren.nodeType === 3) { tekst(koren); return; }
+    if (koren.nodeType !== 1) return;
+    element(koren);
+    const w = document.createTreeWalker(koren, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
+    for (let n = w.nextNode(); n; n = w.nextNode()) n.nodeType === 3 ? tekst(n) : element(n);
+  }
+  function postavi(p, zapamti){
+    pismo = p === 'lat' ? 'lat' : 'cir';
+    document.documentElement.lang = pismo === 'lat' ? 'sr-Latn' : 'sr-Cyrl';
+    document.title = pismo === 'lat' ? uLat(origNaslov) : origNaslov;
+    prodji(document.body);
+    document.querySelectorAll('[data-pismo]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.pismo === pismo)));
+    if (zapamti) try { localStorage.setItem('obrazac-pismo', pismo); } catch (e) {}
+  }
+  new MutationObserver(ms => { if (pismo !== 'lat') return;
+    for (const m of ms) m.addedNodes.forEach(prodji); }).observe(document.body, {childList: true, subtree: true});
+  document.querySelectorAll('[data-pismo]').forEach(b => b.addEventListener('click', () => postavi(b.dataset.pismo, true)));
+  let pocetno = 'cir';
+  try { pocetno = localStorage.getItem('obrazac-pismo') || 'cir'; } catch (e) {}
+  const izVeze = new URLSearchParams(location.search).get('pismo');
+  if (izVeze === 'lat' || izVeze === 'cir') pocetno = izVeze;
+  postavi(pocetno, false);
+})();
+</script>
+</body>
+</html>
