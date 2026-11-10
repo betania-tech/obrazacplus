@@ -84,7 +84,7 @@
   .stub{height:10px;background:var(--line);border-radius:5px;overflow:hidden}
   .stub div{height:100%;background:color-mix(in srgb,var(--band) 70%,transparent);border-radius:5px;transition:width .25s}
   .cena{text-align:right;font:600 17px/1.2 var(--sans);white-space:nowrap}
-  .cena small{display:block;font-weight:400}
+  .cena small{display:block;font-weight:400;white-space:normal}   /* „≈ … дин“ се прелама на уском екрану */
   .formula{grid-column:1/-1;color:var(--muted);font-size:12.5px}
   .oznaka{font:600 10.5px/1 var(--mono);letter-spacing:.08em;color:var(--band);text-transform:uppercase}
   .zbir{background:var(--p-soft);border-radius:6px;padding:14px 16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
@@ -126,7 +126,7 @@
   </div>
   <h1>Цене Образац<span class="plus">+</span></h1>
   <p>Плаћа се по броју корисника – рачунара на којима канцеларија ради у програму. Месечна претплата, или годишње уз два месеца бесплатно; кључ се уноси једном. Пробна верзија је бесплатна: 14 дана или 30 штампи.</p>
-  <p class="pdv-hero">Цене су без ПДВ-а. Betania Tech тренутно није у систему ПДВ-а, па се ПДВ не обрачунава – износ из калкулатора је коначан.</p>
+  <p class="pdv-hero">Цене су у еврима, а плаћа се у динарима по средњем курсу НБС на дан предрачуна. Без ПДВ-а: Betania Tech тренутно није у систему ПДВ-а, <b>а и ако уђе, цена остаје иста</b> – износ из калкулатора је коначан. <b>Оснивачка цена:</b> за све који почну сада остаје иста најмање 12 месеци.</p>
 </div>
 
 <main>
@@ -149,7 +149,7 @@
         </div>
         <label class="chk"><input type="checkbox" id="pripravnik"> адвокатски приправник (Соло −50%)</label>
       </div>
-      <p class="nap">Корисник = рачунар на коме ради Образац+ (особа са лаптопом и рачунаром у канцеларији у пакету Соло рачуна се једном). Цене су у динарима, без ПДВ-а. <b>Betania Tech тренутно није у систему ПДВ-а, па се ПДВ не обрачунава – износ из калкулатора је коначан.</b></p>
+      <p class="nap">Корисник = рачунар на коме ради Образац+ (особа са лаптопом и рачунаром у канцеларији у пакету Соло рачуна се једном). Цене су у еврима, без ПДВ-а; плаћа се у динарима по средњем курсу НБС на дан предрачуна (динари овде: курс од <span id="kurs-dan"></span>). <b>Betania Tech тренутно није у систему ПДВ-а, а и ако уђе, цена остаје иста – износ из калкулатора је коначан.</b></p>
     </div>
     <div class="redovi" id="redovi"></div>
   </div>
@@ -167,8 +167,8 @@
   <table class="t">
     <tr><td>Укључено у пакет Канцеларија</td><td>2 шаблона годишње</td></tr>
     <tr><td>Укључено у пакет Велика канцеларија</td><td>6 шаблона годишње</td></tr>
-    <tr><td>Једноставан Word документ (изјава, овлашћење, сагласност)</td><td>6.000 дин</td></tr>
-    <tr><td>Сложен уговор или званични PDF образац</td><td>до 12.000 дин</td></tr>
+    <tr><td>Једноставан Word документ (изјава, овлашћење, сагласност)</td><td>46,50 €</td></tr>
+    <tr><td>Сложен уговор или званични PDF образац</td><td>до 93 €</td></tr>
   </table>
 </section>
 
@@ -177,7 +177,7 @@
   <ol class="koraci">
     <li>Инсталирајте програм са <a href="./">странице за преузимање</a> и пробајте га – 14 дана или 30 штампи, без обавезе.</li>
     <li>Изаберите пакет и плаћање у калкулатору и кликните „Затражи предрачун“ (или у програму: <b>Подршка → Лиценца и куповина</b>).</li>
-    <li>Предрачун стиже на вашу е-пошту; уплата на рачун Betania Tech – уговор се не потписује. Цене су без ПДВ-а; Betania Tech тренутно није у систему ПДВ-а, па се ПДВ не обрачунава.</li>
+    <li>Предрачун стиже на вашу е-пошту, у динарима по средњем курсу НБС на дан предрачуна; уплата на рачун Betania Tech – уговор се не потписује. Цене су без ПДВ-а; Betania Tech тренутно није у систему ПДВ-а, а ако уђе, цена остаје иста.</li>
     <li>Претплатни кључ стиже мејлом. <b>Уноси се једном</b> (Подешавања → Лиценца) – канцеларија добија администраторски кључ и кориснички за цело особље.</li>
     <li>Претплата се продужава <b>само уплатом</b> по следећем предрачуну, месечно или годишње – нови кључ не треба. Програм сам види продужење при следећој провери.</li>
   </ol>
@@ -204,14 +204,17 @@
 <footer><img src="betania-wide.svg" alt="Betania">Образац+ v1.1.0 · © Betania · <a href="mailto:hello@betania.io">hello@betania.io</a></footer>
 
 <script>
-// Цене и правила – једино место које се мења (предлог 9. 11. 2026, чека Миланову потврду).
+// Цене и правила – једино место које се мења. У еврима (Милан, 10. 11. 2026): Соло 10 €, остали пакети у истом
+// односу као раније динарске цене (1.290 → 10 €), заокружено на 5 центи. Плаћа се у динарима по средњем курсу НБС на дан
+// предрачуна; KURS је само за приказ („≈ … дин“) и мења се кад хоћемо свежији пример.
+const KURS = 117.6305, KURS_DAN = '10. 11. 2026.';   // средњи курс НБС, курсна листа бр. 215
 const PAKETI = [
   { id: 'solo', naziv: 'Соло', za: 'адвокат без запослених, приправник', boja: '--solo',
-    mesec: 1290, ukljuceno: 1, poKorisniku: 1290, ai: '50 дневно по кориснику', org: false, sabloni: 0, podrska: 'мејл' },
+    mesec: 10, ukljuceno: 1, poKorisniku: 10, ai: '50 дневно по кориснику', org: false, sabloni: 0, podrska: 'мејл' },
   { id: 'kanc', naziv: 'Канцеларија', za: 'адвокатска канцеларија', boja: '--kanc',
-    mesec: 3490, ukljuceno: 5, poKorisniku: 690, ai: '200 дневно', org: true, sabloni: 2, podrska: 'мејл' },
+    mesec: 27.05, ukljuceno: 5, poKorisniku: 5.35, ai: '200 дневно', org: true, sabloni: 2, podrska: 'мејл' },
   { id: 'velika', naziv: 'Велика канцеларија', za: 'јавни бележник, већа канцеларија', boja: '--velika',
-    mesec: 7990, ukljuceno: 15, poKorisniku: 490, ai: '600 дневно', org: true, sabloni: 6, podrska: 'исти радни дан + помоћ при инсталацији' },
+    mesec: 61.95, ukljuceno: 15, poKorisniku: 3.80, ai: '600 дневно', org: true, sabloni: 6, podrska: 'исти радни дан + помоћ при инсталацији' },
 ];
 const GODISNJE_MESECI = 10;          // годишње = 10 месеци (2 гратис)
 const PRIPRAVNIK = 0.5;              // Соло за адвокатског приправника
@@ -219,7 +222,9 @@ const SLIDER_MAX = 30, RUCNO_MAX = 500;
 const KONTAKT = 'hello@betania.io';
 
 const $ = s => document.querySelector(s);
-const din = n => Math.round(n).toLocaleString('sr-RS') + ' дин';
+const cent = n => Math.round(n * 100) / 100;
+const eur = n => { const c = cent(n); return c.toLocaleString('sr-RS', { minimumFractionDigits: Number.isInteger(c) ? 0 : 2, maximumFractionDigits: 2 }) + '\u00a0€'; };   // неломљиви размак: број и валута у истом реду
+const din = n => Math.round(cent(n) * KURS).toLocaleString('sr-RS') + '\u00a0дин';
 const kor = n => n + ' ' + (n % 10 === 1 && n % 100 !== 11 ? 'корисник' : 'корисника');
 let broj = 4, period = 'mesec';
 
@@ -231,13 +236,13 @@ const zaPeriod = m => period === 'godina' ? m * GODISNJE_MESECI : m;
 const pripr = () => $('#pripravnik').checked;
 function najbolji(n){
   let b = PAKETI[0];
-  for (const p of PAKETI) if (mesecno(p, n, pripr()) < mesecno(b, n, pripr())) b = p;
+  for (const p of PAKETI) if (cent(mesecno(p, n, pripr())) < cent(mesecno(b, n, pripr()))) b = p;
   return b;
 }
 function formula(p, n){
-  if (p.id === 'solo') return `${din(p.poKorisniku)} × ${kor(n)}${pripr() ? ' × 50% (приправник)' : ''}` + (period === 'godina' ? ` × ${GODISNJE_MESECI} месеци` : ' месечно');
+  if (p.id === 'solo') return `${eur(p.poKorisniku)} × ${kor(n)}${pripr() ? ' × 50% (приправник)' : ''}` + (period === 'godina' ? ` × ${GODISNJE_MESECI} месеци` : ' месечно');
   const visak = Math.max(0, n - p.ukljuceno);
-  return `${din(p.mesec)} (укључено ${kor(p.ukljuceno)})` + (visak ? ` + ${visak} × ${din(p.poKorisniku)}` : '') + (period === 'godina' ? ` × ${GODISNJE_MESECI} месеци` : ' месечно');
+  return `${eur(p.mesec)} (укључено ${kor(p.ukljuceno)})` + (visak ? ` + ${visak} × ${eur(p.poKorisniku)}` : '') + (period === 'godina' ? ` × ${GODISNJE_MESECI} месеци` : ' месечно');
 }
 function opseg(p){                    // где је пакет најповољнији (за натпис у реду)
   const runs = []; let od = null;
@@ -262,25 +267,25 @@ function crtaj(){
   const crte = [1, ...trake.slice(1).map(t => t[1]), max].filter((v, i, a) => a.indexOf(v) === i);
   $('#crte').innerHTML = crte.map(v => `<span style="left:${(v - 1) / (max - 1) * 100}%">${v}</span>`).join('');
   // редови пакета
-  const ceneP = PAKETI.map(p => zaPeriod(mesecno(p, broj, pripr())));
+  const ceneP = PAKETI.map(p => cent(zaPeriod(mesecno(p, broj, pripr()))));
   const najmanja = Math.min(...ceneP), najveca = Math.max(...ceneP);
   $('#redovi').innerHTML = PAKETI.map((p, i) => { const c = ceneP[i], razlika = c - najmanja, hot = p.id === best.id;
     return `<div class="red ${hot ? 'najbolji' : ''}" style="--band:var(${p.boja})">
       <div><b><i></i>${p.naziv}</b><small>${opseg(p)}</small></div>
       <div class="stub"><div style="width:${Math.max(3, c / najveca * 100)}%"></div></div>
-      <div class="cena">${din(c)}<small>${period === 'godina' ? 'годишње' : 'месечно'}${razlika > 0 ? ` · +${din(razlika)}` : ''}</small></div>
+      <div class="cena">${eur(c)}<small>${period === 'godina' ? 'годишње' : 'месечно'} · ≈\u00a0${din(c)}${razlika > 0 ? ` · +${eur(razlika)}` : ''}</small></div>
       <div class="formula">${hot ? '<span class="oznaka">најповољније · </span>' : ''}${formula(p, broj)}${!p.org && broj > 1 ? ' · без кључа организације' : ''}</div></div>`; }).join('');
   // збир и предрачун
   const c = zaPeriod(mesecno(best, broj, pripr()));
-  const tekst = `Пакет: ${best.naziv}\nКорисника: ${broj}\nПлаћање: ${period === 'godina' ? 'годишње' : 'месечно'}${pripr() && best.id === 'solo' ? '\nАдвокатски приправник (попуст 50%)' : ''}\nИзнос по калкулатору: ${din(c)} ${period === 'godina' ? 'годишње' : 'месечно'}, без ПДВ-а (Betania Tech није у систему ПДВ-а)\n\nПодаци за предрачун (назив, адреса, ПИБ, матични број):\n`;
-  $('#zbir').innerHTML = `<p>За <b>${kor(broj)}</b> најповољнији је пакет <b>${best.naziv}</b>: <b>${din(c)}</b> ${period === 'godina' ? `годишње (≈ ${din(c / 12)} месечно)` : 'месечно'}${period === 'mesec' ? ` · годишње би било ${din(mesecno(best, broj, pripr()) * GODISNJE_MESECI)}` : ''}.<br><small>Без ПДВ-а – Betania Tech није у систему ПДВ-а, па је ово коначан износ.</small></p>
+  const tekst = `Пакет: ${best.naziv}\nКорисника: ${broj}\nПлаћање: ${period === 'godina' ? 'годишње' : 'месечно'}${pripr() && best.id === 'solo' ? '\nАдвокатски приправник (попуст 50%)' : ''}\nИзнос по калкулатору: ${eur(c)} ${period === 'godina' ? 'годишње' : 'месечно'} (≈ ${din(c)} по курсу од ${KURS_DAN}; предрачун у динарима по средњем курсу НБС на дан издавања), без ПДВ-а (Betania Tech није у систему ПДВ-а)\n\nПодаци за предрачун (назив, адреса, ПИБ, матични број):\n`;
+  $('#zbir').innerHTML = `<p>За <b>${kor(broj)}</b> најповољнији је пакет <b>${best.naziv}</b>: <b>${eur(c)}</b> ${period === 'godina' ? 'годишње' : 'месечно'} (≈ ${din(c)})${period === 'godina' ? `, ≈ ${eur(c / 12)} месечно` : ` · годишње би било ${eur(mesecno(best, broj, pripr()) * GODISNJE_MESECI)}`}.<br><small>Без ПДВ-а – Betania Tech није у систему ПДВ-а, а ако уђе, цена остаје иста. Динари по курсу од ${KURS_DAN}; предрачун иде по курсу на дан издавања.</small></p>
     <a class="btn" href="mailto:${KONTAKT}?subject=${encodeURIComponent('Предрачун – Образац+ ' + best.naziv)}&body=${encodeURIComponent(tekst)}">Затражи предрачун</a>`;
   // картице пакета
   $('#paketi').innerHTML = PAKETI.map(p => { const m = p.id === 'solo' ? p.poKorisniku : p.mesec;
     return `<div class="paket" style="--band:var(${p.boja})"><h3>${p.naziv}</h3><div class="za">${p.za}</div>
-      <div class="iznos">${din(m)} <small>/ месечно${p.id === 'solo' ? ' по кориснику' : ''}</small></div>
-      <div class="god">годишње ${din(m * GODISNJE_MESECI)}${p.id === 'solo' ? ' по кориснику' : ''}</div>
-      <ul>${p.id === 'solo' ? '<li>1 корисник (+ лаптоп исте особе)</li>' : `<li>укључено ${kor(p.ukljuceno)}, сваки следећи ${din(p.poKorisniku)} месечно</li>`}
+      <div class="iznos">${eur(m)} <small>/ месечно${p.id === 'solo' ? ' по кориснику' : ''}</small></div>
+      <div class="god">≈ ${din(m)} месечно · годишње ${eur(m * GODISNJE_MESECI)}${p.id === 'solo' ? ' по кориснику' : ''}</div>
+      <ul>${p.id === 'solo' ? '<li>1 корисник (+ лаптоп исте особе)</li>' : `<li>укључено ${kor(p.ukljuceno)}, сваки следећи ${eur(p.poKorisniku)} месечно</li>`}
         <li>сви шаблони, PDF и Word, ажурирања</li><li>AI помоћник и AI претрага: ${p.ai}</li>
         <li class="${p.org ? '' : 'ne'}">кључ организације: администратор + особље, преглед рада, адреса и подножје за све рачунаре</li>
         <li class="${p.sabloni ? '' : 'ne'}">${p.sabloni ? `${p.sabloni} нова шаблона по мери годишње` : 'шаблони по мери – по ценовнику'}</li>
@@ -295,6 +300,7 @@ $('#klizac').addEventListener('input', e => { broj = Number(e.target.value); uno
 $('#pripravnik').addEventListener('change', crtaj);
 document.querySelectorAll('[data-period]').forEach(b => b.addEventListener('click', () => {
   period = b.dataset.period; document.querySelectorAll('[data-period]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); crtaj(); }));
+$('#kurs-dan').textContent = KURS_DAN;
 crtaj();
 </script>
 <script>
